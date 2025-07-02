@@ -6,7 +6,6 @@ class UserRegisterDTO(BaseModel):
     last_name: str
     email: EmailStr
     password: str
-    role_id: int
 
 
 class UserLoginDTO(BaseModel):

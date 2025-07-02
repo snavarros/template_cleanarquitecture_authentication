@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: main_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  
+  db_test:
+    image: postgres:15
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: main_db
+    ports:
+      - "5433:5432"  # Usa un puerto distinto en tu máquina
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+
+  web:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app  # Montar código en contenedor
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/postgres
+
+volumes:
+  postgres_data:
+  postgres_test_data:

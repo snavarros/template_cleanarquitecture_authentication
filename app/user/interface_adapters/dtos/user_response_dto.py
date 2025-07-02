@@ -1,9 +1,13 @@
 from pydantic import BaseModel
 
+from app.user.entities.user import RoleEnum
+
 
 class UserResponseDTO(BaseModel):
+    name: str
+    last_name: str
     email: str
-    message: str
+    role: RoleEnum
 
 
 class TokenResponseDTO(BaseModel):

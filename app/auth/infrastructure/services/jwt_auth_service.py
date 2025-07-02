@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from passlib.context import CryptContext
 from jose import jwt
 
-from app.config import settings
+from app.config.settings import settings
 
 
 class AuthServiceJWT:
@@ -15,10 +15,12 @@ class AuthServiceJWT:
     def verify_password(self, plain: str, hashed: str) -> bool:
         return self.pwd_context.verify(plain, hashed)
 
-    def create_token(self, email: str) -> str:
-        payload = {
-            "sub": email,
-            "exp": datetime.utcnow() + timedelta(minutes=30),
-        }
-
-        return jwt.encode(payload, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    def create_access_token(
+        self, data: dict, expires_delta: timedelta | None = None
+    ) -> str:
+        to_encode = data.copy()
+        expire = datetime.now(tz=timezone.utc) + (
+            expires_delta or timedelta(minutes=30)
+        )
+        to_encode.update({"exp": expire})
+        return jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)

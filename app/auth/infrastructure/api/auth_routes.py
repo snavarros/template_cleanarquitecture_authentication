@@ -5,12 +5,15 @@ from app.config.database import get_db
 from app.user.application.use_cases.register_user import RegisterUser
 from app.user.infrastructure.repositories.user_repository import UserRepository
 from app.user.interface_adapters.presenters.user_presenter import UserPresenter
-from user.interface_adapters.dtos.user_request_dto import UserLoginDTO, UserRegisterDTO
+from app.user.interface_adapters.dtos.user_request_dto import (
+    UserLoginDTO,
+    UserRegisterDTO,
+)
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/auth/register")
+@router.post("/register")
 async def register(dto: UserRegisterDTO, db=Depends(get_db)):
     repo = UserRepository(db)
     auth = AuthServiceJWT()

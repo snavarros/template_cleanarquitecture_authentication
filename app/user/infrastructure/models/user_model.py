@@ -1,5 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
+from sqlalchemy import Column, Integer, String
 from app.config.database import Base
 
 
@@ -9,7 +8,6 @@ class UserModel(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String)
     last_name = Column(String)
-    email = Column(String, unique=True, index=True)
-    password = Column(String)
-    role_id = Column(Integer, ForeignKey("roles.id"))
-    role = relationship("RoleModel")
+    email = Column(String, unique=True, nullable=False)
+    hashed_password = Column(String)
+    role = Column(String)

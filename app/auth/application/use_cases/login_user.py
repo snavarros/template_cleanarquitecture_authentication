@@ -1,5 +1,11 @@
+from datetime import timedelta
+from app.auth.infrastructure.services.jwt_auth_service import AuthServiceJWT
+from app.config.settings import settings
+from app.user.application.ports.user_repository import IUserRepository
+
+
 class LoginUser:
-    def __init__(self, repo, auth_service):
+    def __init__(self, repo: IUserRepository, auth_service: AuthServiceJWT):
         self.repo = repo
         self.auth = auth_service
 
@@ -9,4 +15,7 @@ class LoginUser:
             dto.password, db_user.hashed_password
         ):
             raise Exception("Invalid credentials")
-        return self.auth.create_token(db_user.email)
+        return self.auth.create_access_token(
+            data={"sub": str(db_user.email)},
+            expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),
+        )
