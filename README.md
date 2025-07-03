@@ -62,8 +62,10 @@ curl -X POST http://localhost:8080/auth/register \
   -d '{
     "name": "Sebastián",
     "last_name": "Navarro",
-    "email": "sebastian2@example.com",
-    "password": "123456"
+    "email": "admin@example.com",
+    "password": "Admin1234!",
+    "phone":"+56912345678",
+    "region":"1"
   }'
 ``` 
 
@@ -71,7 +73,7 @@ Authenticar
 ```
 curl -X POST http://localhost:8080/auth/login \
   -H "Content-Type: application/json" \
-  -d '{"email": "admin3@example.com", "password": "Admin1234!"}'
+  -d '{"email": "admin@example.com", "password": "Admin1234!"}'
 ```
 
 Obtener datos del usuario logeado
@@ -82,7 +84,7 @@ curl -X GET http://localhost:8080/users/me \
 
 Cambiar role usuario
 ```
-curl -X PATCH http://localhost:8080/users/user@example.com/role \
+curl -X PATCH http://localhost:8080/users/admin@example.com/role \
   -H "Authorization: Bearer <TU_TOKEN_JWT>" \
   -H "Content-Type: application/json" \
   -d '{
@@ -96,13 +98,18 @@ Crear usuario admin directamente en postgres docker
 psql -U postgres -d postgres 
 
 ```
-INSERT INTO users (name, last_name, email, hashed_password, role, created_at, updated_at)
-VALUES (
-  'Admin', 
-  'User', 
-  'admin3@example.com', 
+INSERT INTO users (
+  name, last_name, email, hashed_password, phone, region, role, is_active, provider, created_at, updated_at
+) VALUES (
+  'Sebastián', 
+  'Navarro', 
+  'admin100@example.com', 
   '$2b$12$6Rhw26nKaZxtIQMtAU95SOlo1TD1S80muazV.jBqgy.L9FoiNf4Xa', 
-  'admin', 
+  '+56912345678', 
+  1, 
+  'admin',
+  true, 
+  'local', 
   NOW(), 
   NOW()
 );

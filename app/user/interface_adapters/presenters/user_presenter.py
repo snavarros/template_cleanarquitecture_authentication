@@ -13,8 +13,12 @@ class UserPresenter:
     @staticmethod
     def present_user(user: User) -> UserResponseDTO:
         return UserResponseDTO(
+            id=user.id,
             name=user.name,
             last_name=user.last_name,
             email=user.email,
-            role=user.role.value,
+            phone=user.phone,
+            region=user.region,
+            role=user.role,
+            is_active=user.is_active,
         )

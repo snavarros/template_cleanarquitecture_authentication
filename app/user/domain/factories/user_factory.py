@@ -1,17 +1,10 @@
-from app.user.entities.user import RoleEnum, User
+from app.user.entities.user import AdminUser, GuestUser, RoleEnum, User
 
 
-def create_user_by_role(
-    name: str, last_name: str, email: str, hashed_password: str, role: RoleEnum
-) -> User:
-    if role == RoleEnum.GUEST:
-        from app.user.entities.user import GuestUser
-
-        return GuestUser(name, last_name, email, hashed_password, role)
-    if role == RoleEnum.ADMIN:
-        from app.user.entities.user import AdminUser
-
-        return AdminUser(name, last_name, email, hashed_password, role)
-
+def create_user_by_role(user: User) -> User:
+    if user.role == RoleEnum.ADMIN:
+        return AdminUser(**user.__dict__)
+    elif user.role == RoleEnum.GUEST:
+        return GuestUser(**user.__dict__)
     else:
-        raise ValueError(f"Invalid role: {role}")
+        raise ValueError(f"Invalid role: {user.role}")

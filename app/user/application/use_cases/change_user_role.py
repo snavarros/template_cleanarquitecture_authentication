@@ -12,12 +12,12 @@ class ChangeUserRoleUseCase:
         if not isinstance(current_user, AdminUser):
             raise PermissionError("Only admins can change user roles.")
 
-        # if current_user.id == target_user_id:
-        #    raise ValueError("You cannot change your own role.")
+        if current_user.email == target_user_email:
+            raise ValueError("You cannot change your own role.")
 
         user = await self.repo.find_by_email(target_user_email)
         if not user:
-            raise ValueError(f"User with ID {target_user_email} does not exist.")
+            raise ValueError(f"User with EMAIL: {target_user_email} does not exist.")
 
         try:
             validated_role = RoleEnum(new_role)
@@ -25,5 +25,5 @@ class ChangeUserRoleUseCase:
             raise ValueError(f"Invalid role: {new_role}")
 
         user.role = validated_role
-        await self.repo.update(user)
+        await self.repo.update_role(user)
         return user
