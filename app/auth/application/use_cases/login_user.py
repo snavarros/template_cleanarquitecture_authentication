@@ -16,6 +16,7 @@ class LoginUser:
             dto.password, db_user.hashed_password
         ):
             raise Exception("Invalid credentials")
+
         return self.auth.create_access_token(
             data={"sub": str(db_user.email)},
             expires_delta=timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES),

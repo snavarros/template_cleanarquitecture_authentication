@@ -28,12 +28,12 @@ async def get_current_user(
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
         user_email = str(payload.get("sub"))
+        user = await repo.find_by_email(user_email)
+
+        if user is None:
+            raise credentials_exception
+
+        return user
+
     except (JWTError, ValueError):
         raise credentials_exception
-
-    user = await repo.find_by_email(user_email)
-
-    if user is None:
-        raise credentials_exception
-
-    return user

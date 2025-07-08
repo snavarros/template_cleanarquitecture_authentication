@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends
 
 from app.auth.interface_adapters.dependencies.auth import get_current_user
 from app.config.database import get_db
@@ -15,7 +15,7 @@ from app.user.interface_adapters.dtos.user_response_dto import UserResponseDTO
 from app.user.interface_adapters.presenters.user_presenter import UserPresenter
 
 
-router = APIRouter(prefix="/users")
+router = APIRouter(prefix="/users", tags=["users"])
 
 
 @router.get("/me", response_model=UserResponseDTO)
@@ -31,11 +31,8 @@ async def update_my_profile(
 ):
     repo = UserRepository(db)
     use_case = UpdateUserProfileUseCase(repo)
-    try:
-        await use_case.execute(current_user.id, dto)
-        return {"message": "Profile updated successfully"}
-    except ValueError as e:
-        raise HTTPException(status_code=404, detail=str(e))
+    await use_case.execute(current_user.id, dto)
+    return {"message": "Profile updated successfully"}
 
 
 @router.patch("/{user_email}/role")

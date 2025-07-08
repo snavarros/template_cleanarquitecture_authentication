@@ -23,3 +23,9 @@ class IUserRepository(ABC):
     @abstractmethod
     async def update_role(self, user_id: int, dto) -> User:
         pass
+
+    @abstractmethod
+    async def update_password_by_email(
+        self, email: str, new_hashed_password: str
+    ) -> None:
+        pass

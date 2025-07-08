@@ -60,8 +60,8 @@ Registrar usuario
 curl -X POST http://localhost:8080/auth/register \
   -H "Content-Type: application/json" \
   -d '{
-    "name": "Sebastián",
-    "last_name": "Navarro",
+    "name": "Example",
+    "last_name": "Example",
     "email": "admin@example.com",
     "password": "Admin1234!",
     "phone":"+56912345678",
@@ -103,7 +103,7 @@ INSERT INTO users (
 ) VALUES (
   'Sebastián', 
   'Navarro', 
-  'admin100@example.com', 
+  'admin@example.com', 
   '$2b$12$6Rhw26nKaZxtIQMtAU95SOlo1TD1S80muazV.jBqgy.L9FoiNf4Xa', 
   '+56912345678', 
   1, 
@@ -116,3 +116,21 @@ INSERT INTO users (
 ```
 
 password: Admin1234!
+
+
+Solicitar Cambio de contrasena
+
+```
+curl -X POST http://localhost:8080/auth/password/request-reset \
+  -H "Content-Type: application/json" \
+  -d '{"email": "usuario@example.com"}'
+```
+
+```
+curl -X POST http://localhost:8080/auth/password/reset \
+  -H "Content-Type: application/json" \
+  -d '{
+    "token": "PegaTuTokenAqui",
+    "new_password": "NuevaClave123"
+  }'
+```

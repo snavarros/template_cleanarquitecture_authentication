@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.user.application.ports.user_repository import IUserRepository
@@ -57,6 +57,21 @@ class UserRepository(IUserRepository):
         await self.db.commit()
         await self.db.refresh(model)
         return model
+
+    async def update_password_by_email(
+        self, email: str, new_hashed_password: str
+    ) -> None:
+        stmt = (
+            update(UserModel)
+            .where(UserModel.email == email)
+            .values(
+                hashed_password=new_hashed_password,
+                updated_at=datetime.now(timezone.utc),
+            )
+            .execution_options(synchronize_session="fetch")
+        )
+        await self.db.execute(stmt)
+        await self.db.commit()
 
     async def find_by_email(self, email: str) -> User:
         result = await self.db.execute(
