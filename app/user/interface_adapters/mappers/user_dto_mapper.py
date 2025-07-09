@@ -13,5 +13,6 @@ class UserDTOMapper:
             hashed_password=hashed_password,
             phone=dto.phone,
             region=dto.region,
+            is_active=True,
             role=RoleEnum.GUEST,  # Forzado
         )

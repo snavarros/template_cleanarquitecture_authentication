@@ -31,7 +31,7 @@ async def update_my_profile(
 ):
     repo = UserRepository(db)
     use_case = UpdateUserProfileUseCase(repo)
-    await use_case.execute(current_user.id, dto)
+    await use_case.execute(current_user, dto)
     return {"message": "Profile updated successfully"}
 
 

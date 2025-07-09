@@ -62,7 +62,7 @@ curl -X POST http://localhost:8080/auth/register \
   -d '{
     "name": "Example",
     "last_name": "Example",
-    "email": "admin@example.com",
+    "email": "admin1@example.com",
     "password": "Admin1234!",
     "phone":"+56912345678",
     "region":"1"

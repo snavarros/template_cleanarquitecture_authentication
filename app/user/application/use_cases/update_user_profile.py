@@ -10,8 +10,9 @@ class UpdateUserProfileUseCase:
         self.repo = repo
 
     async def execute(self, current_user: User, dto: UserProfileUpdateDTO):
+        print(f"El usuario actual esta activo ? :{current_user.is_active}")
         # Validación opcional de reglas
-        if not current_user.is_active:
+        if not current_user.is_active:  # Error considera que is_active es int
             raise ValueError("Inactive users cannot update profile.")
 
         return await self.repo.update_profile(current_user.id, dto)

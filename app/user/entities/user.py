@@ -18,8 +18,8 @@ class User:
         phone: str,
         region: int,
         role: RoleEnum,
-        is_active: bool = True,
-        provider: str = "local",
+        is_active: bool,
+        provider: str,
     ):
         self.id = id
         if "@" not in email:

@@ -1,5 +1,4 @@
-import datetime
-from time import timezone
+from datetime import datetime, timezone
 from app.user.entities.user import RoleEnum, User
 from app.user.infrastructure.models.user_model import UserModel
 from app.user.interface_adapters.dtos.user_profile_update_dto import (
@@ -46,6 +45,5 @@ class UserMapper:
             model.last_name = dto.last_name
         if dto.phone is not None:
             model.phone = dto.phone
-        if dto.region is not None:
-            model.region = dto.region
+
         model.updated_at = datetime.now(timezone.utc)
